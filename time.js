@@ -72,7 +72,9 @@ collectionW.aggregate(
 
                                              for (var k = 0; k < json2.length; k++){
                                                condition = false;
-                                               if((json1[i]._id).toString() == (json2[k]._id).toString()){
+                                               var v1 = json1[i]._id.courseId + json1[i]._id.sectionId + json1[i]._id.unitId;
+                                              var v2 = json2[k]._id.courseId + json2[k]._id.sectionId + json2[k]._id.unitId;
+                                               if(v1 == v2){
                                                  condition = true;
                                                  break;
                                                }
@@ -85,14 +87,17 @@ collectionW.aggregate(
                                                          if(json1[i].eventTypes[j] == 'Unit Started'){
                                                            if((json1[i].eventTypes[j+1] == 'NavigateAway' || json1[i].eventTypes[j+1] == 'Unit Ended') && (json1[i].users[j] == json1[i].users[j+1])){
                                                              t +=  (json1[i].dates[j+1] - json1[i].dates[j]);
+
+                                                             res.push({_id: json1[i]._id, 'user' : json1[i].users[j] ,'total_time' : t});
+                                                             t = 0;
                                                              j++;
                                                            }
                                                          }
 
                                                        }
 
-                                                       res.push({_id: json1[i]._id, 'total_time' : t});
-                                                       t = 0;
+                                                       // res.push({_id: json1[i]._id, 'total_time' : t});
+                                                       // t = 0;
                                                 }
 
                                            }
